@@ -1,0 +1,9 @@
+{
+  "id": "base"
+  "packages": [
+    "vim",
+    "irssi"
+  ],
+  "directories": [
+  ]
+}

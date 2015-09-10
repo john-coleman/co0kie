@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+# co0kie provisioner
+
+require 'pry'
+require 'pp'
+require_relative '../lib/co0kie/cli'
+require_relative '../lib/co0kie/dough'
+
+options = Co0kie::Cli.parse(ARGV)
+pp options
+pp ARGV
+dough = Co0kie::Dough.new(options)
+cmd = 'echo "hello world"'
+
+pp dough.bake(cmd)
