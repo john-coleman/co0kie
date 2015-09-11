@@ -1,5 +1,5 @@
 {
-  "id": "base"
+  "id": "base_server",
   "packages": [
     "vim",
     "irssi"
