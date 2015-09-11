@@ -1,4 +1,4 @@
-module Co0kie
+class Co0kie
   class Dough
     class Local
       def initialize(options = {})

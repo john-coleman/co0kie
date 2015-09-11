@@ -1,4 +1,4 @@
-module Co0kie
+class Co0kie
   class Dough
     def initialize(options = {})
       if options[:targets].empty?

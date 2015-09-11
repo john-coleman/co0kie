@@ -1,11 +1,11 @@
 require 'optparse'
 
-module Co0kie
+class Co0kie
   class Cli
     def self.parse(args)
       cli_options = Hash.new
       cli_options[:targets] = []
-      cli_options[:role] = :base
+      cli_options[:role] = :base_server
 
       OptionParser.new do |o|
         o.banner = 'Usage: co0kie [options]'

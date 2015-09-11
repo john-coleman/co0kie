@@ -3,8 +3,7 @@
 
 require 'pry'
 require 'pp'
-require_relative '../lib/co0kie/cli'
-require_relative '../lib/co0kie/dough'
+require_relative '../lib/co0kie'
 
 options = Co0kie::Cli.parse(ARGV)
 pp options
@@ -13,3 +12,6 @@ dough = Co0kie::Dough.new(options)
 cmd = 'echo "hello world"'
 
 pp dough.bake(cmd)
+
+require_relative "../roles/#{options[:role]}"
+box(dough)

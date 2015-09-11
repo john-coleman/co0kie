@@ -1,6 +1,6 @@
 require 'net/ssh'
 
-module Co0kie
+class Co0kie
   class Dough
     class Ssh
       def initialize(options)
