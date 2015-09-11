@@ -10,8 +10,7 @@ class Co0kie
 
       def render
         b = binding
-        source = File.read(@template)
-        output = ERB.new(source).result b
+        output = ERB.new(@template).result b
       end
     end
   end

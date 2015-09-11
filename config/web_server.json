@@ -1,17 +1,12 @@
 {
-  "id": "webserver"
-  "packages": [
-    "apache2",
-    "libapache2-mod-php5",
-    "php5-mysqln",
-    "php5-apcu"
-  ],
-  "directories": [
-    {
-      "path": "/var/www/hello_world",
-      "mode": 0755,
-      "owner": "www-data",
-      "group": "www-data"
-    }
-  ]
+  "id": "web_server",
+  "apache2": {
+    "version": "2.4"
+  },
+  "docroot": {
+    "path": "/var/www/hello_world",
+    "mode": "0755",
+    "owner": "root",
+    "group": "www-data"
+  }
 }

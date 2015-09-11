@@ -1,0 +1,18 @@
+<VirtualHost *:80>
+  ServerName helloworld.com
+  ServerAlias www.helloworld.com
+  DirectoryIndex index.php
+  DocumentRoot <%= @variables['docroot']['path'] %>
+  <Directory <%= @variables['docroot']['path'] %>>
+    AllowOverride None
+    <% if @variables['apache2']['version'].to_f >= 2.4 %>
+    Require all granted
+    <% else %>
+    Order Allow,Deny
+    Allow from All
+    <% end %>
+  </Directory>
+
+  ErrorLog /var/log/apache2/helloworld.com_error.log
+  CustomLog /var/log/apache2/helloworld.com_access.log combined
+</VirtualHost>
