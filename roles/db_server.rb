@@ -11,21 +11,26 @@ def box(dough)
   mysql_server_seed_src = File.read(File.expand_path('../../templates/db_server/mysql-server_seed_src.erb', __FILE__))
 
   seed = Co0kie::Cutter::Template.new(mysql_server_seed_src, config).render
+  commands << Co0kie::Cutter::Directory.new('/var/cache/local/preseeding',
+                                       'root',
+                                       'root',
+                                       '0755').create
   commands << Co0kie::Cutter::File.new('/var/cache/local/preseeding/mysql-server.seed',
                                        'root',
                                        'root',
                                        '0600').create(seed)
+  commands << "/usr/bin/debconf-set-selections /var/cache/local/preseeding/mysql-server.seed"
 
   %w(mysql-server mysql-client).each do |pkg|
     commands << Co0kie::Cutter::Package.new(pkg).install
   end
 
-  commands << Co0kie::Cutter::Service.new('mysql-server').start
+  commands << Co0kie::Cutter::Service.new('mysql').start
 
   pp 'Commands:'
   pp commands
 
-  #commands.each do |cmd|
-  #  dough.bake(cmd)
-  #end
+  commands.each do |cmd|
+    dough.bake(cmd)
+  end
 end

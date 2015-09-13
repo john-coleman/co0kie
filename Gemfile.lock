@@ -4,6 +4,8 @@ GEM
     coderay (1.1.0)
     diff-lcs (1.2.5)
     method_source (0.8.2)
+    net-sftp (2.1.2)
+      net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -28,6 +30,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  net-sftp
   net-ssh
   pry
   rspec

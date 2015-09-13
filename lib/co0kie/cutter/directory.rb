@@ -9,15 +9,15 @@ class Co0kie
       end
 
       def create
-        cmd = "if [ ! -d \"#{@path}\" ]; then mkdir \"#{@path}\"; else echo \"Directory #{@path} exists!\"; fi"
-        cmd << "; chown \"#{@owner}\" \"#{@path}\"" if @owner
-        cmd << "; chgrp \"#{@group}\" \"#{@path}\"" if @group
-        cmd << "; chmod \"#{@mode}\" \"#{@path}\"" if @mode
+        cmd = "if [ ! -d \"#{@path}\" ]; then sudo mkdir -p \"#{@path}\"; else echo \"Directory #{@path} exists!\"; fi"
+        cmd << "; sudo chown \"#{@owner}\" \"#{@path}\"" if @owner
+        cmd << "; sudo chgrp \"#{@group}\" \"#{@path}\"" if @group
+        cmd << "; sudo chmod \"#{@mode}\" \"#{@path}\"" if @mode
         cmd
       end
 
       def delete
-        "rm -rf \"#{@path}\""
+        "sudo rm -rf \"#{@path}\""
       end
     end
   end

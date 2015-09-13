@@ -1,5 +1,5 @@
 {
   "id": "db_server",
   "mysql_server_root_password": "sekrit",
-  "mysql_server_version": "5.5"
+  "mysql_server_version": 5.5
 }

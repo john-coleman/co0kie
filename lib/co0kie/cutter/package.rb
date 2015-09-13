@@ -7,18 +7,18 @@ class Co0kie
       end
 
       def install
-        cmd = "apt-get -qy install #{@package}"
+        cmd = "sudo apt-get -qy install #{@package}"
         cmd << " @#{@version}" if @version
         cmd
       end
 
       def status
-        "dpkg -s #{@package} | grep 'Status: '"
+        "sudo dpkg -s #{@package} | grep 'Status: '"
       end
 
       %w{check purge remove}.each do |action|
         define_method(action) do
-          "apt-get -qy #{@action} #{@package}"
+          "sudo apt-get -qy #{@action} #{@package}"
         end
       end
     end

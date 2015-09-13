@@ -6,11 +6,11 @@ class Co0kie
       end
 
       def disable
-        "/usr/sbin/a2dissite #{@site}"
+        "sudo /usr/sbin/a2dissite #{@site}"
       end
 
       def enable
-        "/usr/sbin/a2ensite #{@site}"
+        "sudo /usr/sbin/a2ensite #{@site}"
       end
     end
   end

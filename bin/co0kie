@@ -14,4 +14,4 @@ cmd = 'echo "hello world"'
 pp dough.bake(cmd)
 
 require_relative "../roles/#{options[:role]}"
-box(dough)
+box(dough.dough)

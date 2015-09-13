@@ -1,5 +1,3 @@
-require 'optparse'
-
 class Co0kie
   class Cli
     def self.parse(args)
@@ -13,6 +11,9 @@ class Co0kie
         o.separator "Specific options:"
         o.on('-P', '--password [PASSWORD]', 'Password to use for remote provisioning') do |pass|
           cli_options[:password] = pass
+        end
+        o.on('-p', '--port [PORT]', 'Port to use for remote provisioning') do |port|
+          cli_options[:port] = port
         end
         o.on('-r', '--role [ROLE]', [:base_server, :db_server, :web_server], 'Role to configure. Eg. base_server (default), db_server, web_server') do |role|
           cli_options[:role] = role

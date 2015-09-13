@@ -7,7 +7,7 @@ class Co0kie
 
       %w(disable enable reload restart start status stop).each do |action|
         define_method(action) do
-          cmd = "service #{@service} #{action}"
+          cmd = "sudo service #{@service} #{action}"
         end
       end
     end

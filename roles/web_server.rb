@@ -1,7 +1,4 @@
-require 'json'
-require 'pp'
 require_relative '../lib/co0kie'
-
 
 def box(dough)
   pp 'Wonderful web_server'
@@ -10,35 +7,46 @@ def box(dough)
   #config = JSON.parse(File.read(File.expand_path('../../config/db_server.json', __FILE__)))
   pp config
 
-  %w(apache2 libapache2-mod-php5 php5-mysqln php5-apcu).each do |pkg|
+  %w(apache2 libapache2-mod-php5 php5-mysqlnd php5-apcu).each do |pkg|
     commands << Co0kie::Cutter::Package.new(pkg).install
   end
 
   commands << Co0kie::Cutter::Directory.new(config['docroot']['path'],
-                                            config['docroot']['owner'],
+                                            dough.user,
                                             config['docroot']['group'],
                                             config['docroot']['mode']).create
 
   app = File.read(File.expand_path('../../files/hello_world/index.php', __FILE__))
+  puts app
+
   commands << Co0kie::Cutter::File.new(File.join(config['docroot']['path'], 'index.php'),
                                        config['docroot']['owner'],
                                        config['docroot']['group'],
                                        644).create(app)
+  #commands << Co0kie::Cutter::Directory.new(config['docroot']['path'],
+  #                                          config['docroot']['owner'],
+  #                                          config['docroot']['group'],
+  #                                          config['docroot']['mode']).create
+  #commands << Co0kie::Cutter::File.new(File.join(config['docroot']['path'], 'index.php'),
+  #                                     config['docroot']['owner'],
+  #                                     config['docroot']['group'],
+  #                                     644).copy(File.expand_path('../../files/hello_world/index.php', __FILE__), dough)
 
-  commands << Co0kie::Cutter::Apache2Site.new('default').disable
+  commands << Co0kie::Cutter::Apache2Site.new('000-default').disable
 
   apache2_vhost_src = File.read(File.expand_path('../../templates/web_server/helloworld.com.erb', __FILE__))
   apache2_vhost = Co0kie::Cutter::Template.new(apache2_vhost_src, config).render
-  commands << Co0kie::Cutter::File.new('/etc/apache2/sites-available/helloworld.com',
+  commands << Co0kie::Cutter::File.new('/etc/apache2/sites-available/helloworld.com.conf',
                                        'root',
                                        'root',
                                        644).create(apache2_vhost)
   commands << Co0kie::Cutter::Apache2Site.new('helloworld.com').enable
+  commands << Co0kie::Cutter::Service.new('apache2').reload
 
   pp 'Commands:'
   pp commands
 
-  #commands.each do |cmd|
-  #  dough.bake(cmd)
-  #end
+  commands.each do |cmd|
+    dough.bake(cmd)
+  end
 end

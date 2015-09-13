@@ -9,16 +9,42 @@ class Co0kie
       end
 
       def create(content)
-        cmd = "echo -n \"#{content}\" > \"#{@path}\""
-        cmd << "; chown \"#{@owner}\" \"#{@path}\"" if @owner
-        cmd << "; chgrp \"#{@group}\" \"#{@path}\"" if @group
-        cmd << "; chmod \"#{@mode}\" \"#{@path}\"" if @mode
+        cmd = "/bin/echo -n '#{content}' | sudo tee '#{@path}'"
+        cmd << "; sudo /bin/chown '#{@owner}' '#{@path}'" if @owner
+        cmd << "; sudo /bin/chgrp '#{@group}' '#{@path}'" if @group
+        cmd << "; sudo /bin/chmod '#{@mode}' '#{@path}'" if @mode
         cmd
       end
 
       def delete
-        "rm -f \"#{@path}\""
+        "sudo /bin/rm -f \"#{@path}\""
       end
+
+      # def copy(source, dough)
+      #   case dough
+      #   when Co0kie::Dough::Local
+      #     content = ::File.read(source)
+      #     file = ::File.open(@path, 'w')
+      #     file.write(content)
+      #     file.chmod(@mode.to_i) if @mode
+      #     file.chown(::Etc.getpwnam(@owner).uid, ::Etc.getgrnam(@group).gid) if ( @user || @group )
+      #     file.close
+      #     "echo 'Copied #{@source} to #{@path}'"
+      #   when Co0kie::Dough::Ssh
+      #     dough.targets.each do |host|
+      #       binding.pry
+      #       Net::SFTP.start(host, dough.user, :password => dough.password, :port => dough.port) do |conn|
+      #         conn.upload!(source, @path)
+      #         conn.file.chown(@path, @owner, @group) if (@owner || @group)
+      #         conn.file.chmod(@path, @mode) if @mode
+      #         conn.close
+      #       end
+      #     end
+      #     "echo 'Copied #{@source} to #{@path} on #{dough.targets.join(' ')}'"
+      #   else
+      #     raise "This is not Dough!"
+      #   end
+      # end
     end
   end
 end

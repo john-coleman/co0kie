@@ -1,10 +1,10 @@
-mysql-server-<%= @variables[:mysql_server_version] %>        mysql-server/root_password_again        select <%= @variables[:mysql_server_root_password] %>
-mysql-server-<%= @variables[:mysql_server_version] %>        mysql-server/root_password      select <%= @variables[:mysql_server_root_password] %>
-mysql-server-<%= @variables[:mysql_server_version] %>        mysql-server-<%= @variables[:mysql_server_version] %>/really_downgrade       boolean false
-mysql-server-<%= @variables[:mysql_server_version] %>        mysql-server-<%= @variables[:mysql_server_version] %>/need_sarge_compat      boolean false
-mysql-server-<%= @variables[:mysql_server_version] %>        mysql-server-<%= @variables[:mysql_server_version] %>/start_on_boot  boolean false
-mysql-server-<%= @variables[:mysql_server_version] %>        mysql-server/error_setting_password     boolean false
-mysql-server-<%= @variables[:mysql_server_version] %>        mysql-server-<%= @variables[:mysql_server_version] %>/nis_warning    note
-mysql-server-<%= @variables[:mysql_server_version] %>        mysql-server-<%= @variables[:mysql_server_version] %>/postrm_remove_databases        boolean false
-mysql-server-<%= @variables[:mysql_server_version] %>        mysql-server/password_mismatch  boolean false
-mysql-server-<%= @variables[:mysql_server_version] %>        mysql-server-<%= @variables[:mysql_server_version] %>/need_sarge_compat_done boolean true
+mysql-server-<%= @variables['mysql_server_version'] %>        mysql-server/root_password_again        select <%= @variables['mysql_server_root_password'] %>
+mysql-server-<%= @variables['mysql_server_version'] %>        mysql-server/root_password      select <%= @variables['mysql_server_root_password'] %>
+mysql-server-<%= @variables['mysql_server_version'] %>        mysql-server-<%= @variables['mysql_server_version'] %>/really_downgrade       boolean false
+mysql-server-<%= @variables['mysql_server_version'] %>        mysql-server-<%= @variables['mysql_server_version'] %>/need_sarge_compat      boolean false
+mysql-server-<%= @variables['mysql_server_version'] %>        mysql-server-<%= @variables['mysql_server_version'] %>/start_on_boot  boolean false
+mysql-server-<%= @variables['mysql_server_version'] %>        mysql-server/error_setting_password     boolean false
+mysql-server-<%= @variables['mysql_server_version'] %>        mysql-server-<%= @variables['mysql_server_version'] %>/nis_warning    note
+mysql-server-<%= @variables['mysql_server_version'] %>        mysql-server-<%= @variables['mysql_server_version'] %>/postrm_remove_databases        boolean false
+mysql-server-<%= @variables['mysql_server_version'] %>        mysql-server/password_mismatch  boolean false
+mysql-server-<%= @variables['mysql_server_version'] %>        mysql-server-<%= @variables['mysql_server_version'] %>/need_sarge_compat_done boolean true

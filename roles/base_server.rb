@@ -16,7 +16,7 @@ def box(dough)
   pp 'Commands:'
   pp commands
 
-  #commands.each do |cmd|
-  #  dough.bake(cmd)
-  #end
+  commands.each do |cmd|
+    dough.bake(cmd)
+  end
 end
