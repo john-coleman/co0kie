@@ -4,8 +4,55 @@ def box(dough)
   pp 'Wonderful web_server'
   commands = []
   config = JSON.parse(File.read(File.expand_path('../../config/web_server.json', __FILE__)))
-  #config = JSON.parse(File.read(File.expand_path('../../config/db_server.json', __FILE__)))
   pp config
+
+  triage =<<-ERMAGERD
+echo '###TRIAGE Report processes hogging deleted files and gently clear if necessary'
+for messypid in $(sudo find /proc/*/fd -ls | grep '(deleted)' | cut -f 3 -d '/' | grep -v '^1$' | uniq); do
+  SLOTHPROC=$(ps -p $messypid -o comm=)
+  NORMPROC=$(echo $SLOTHPROC | sed 's/mysqld/mysql/' | sed 's/named/bind/')
+  echo "Process $messypid $SLOTHPROC has open filehandle for deleted file(s):"
+  sudo lsof -p $messypid | grep '(deleted)'
+
+  if [ $(df --output=pcent / | tail -n 1 | cut -f 1 -d '%') -gt 89 ]; then
+    echo "Disk usage >= 90% - attempting to restart offending processes!"
+    sudo kill -HUP $messypid
+    sudo service $NORMPROC restart
+    sudo sync
+  fi
+done
+
+echo '###TRIAGE Report processes still hogging deleted files and ruthlessly clear if necessary'
+for messypid in $(sudo find /proc/*/fd -ls | grep '(deleted)' | cut -f 3 -d '/' | grep -v '^1$' | uniq); do
+  SLOTHPROC=$(ps -p $messypid -o comm=)
+  NORMPROC=$(echo $SLOTHPROC | sed 's/mysqld/mysql/' | sed 's/named/bind/')
+  echo "Process $messypid $SLOTHPROC has open filehandle for deleted file(s):"
+  sudo lsof -p $messypid | grep '(deleted)'
+  if [ $(df --output=pcent / | tail -n 1 | cut -f 1 -d '%') -gt 89 ]; then
+    echo "DANGER CLOSE! - Disk usage still >= 90% - attempting to kill offending processes!"
+    sudo kill -9 $messypid
+    sudo sync
+  fi
+done
+
+echo '###TRIAGE Clear processes hogging port80'
+for hoggypid in $(sudo lsof -i4:80 | tr -s ' ' | grep -v 'COMMAND PID' | grep -v 'apache2' | cut -f 2 -d ' '); do
+  HOGPROC=$(ps -p $hoggypid -o comm=)
+  NORMPROC=$(echo $HOGPROC | sed 's/mysqld/mysql/' | sed 's/named/bind/')
+  echo "Process $hoggypid $NORMPROC has open filehandle for port80"
+  sudo service $NORMPROC stop; sudo kill -9 $hoggypid
+done
+
+echo '###TRIAGE Ensure we can resolv'
+sudo /sbin/resolvconf -u
+host example.com
+
+echo '###TRIAGE Update APT cache'
+sudo apt-get update
+  ERMAGERD
+  commands << triage
+
+  commands << Co0kie::Cutter::FirewallRule.new.flush('INPUT')
 
   %w(apache2 libapache2-mod-php5 php5-mysqlnd php5-apcu).each do |pkg|
     commands << Co0kie::Cutter::Package.new(pkg).install
@@ -23,6 +70,7 @@ def box(dough)
                                        config['docroot']['owner'],
                                        config['docroot']['group'],
                                        644).create(app)
+  # ToDo: SFTP :)
   #commands << Co0kie::Cutter::Directory.new(config['docroot']['path'],
   #                                          config['docroot']['owner'],
   #                                          config['docroot']['group'],
